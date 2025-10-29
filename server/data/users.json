@@ -1,0 +1,20 @@
+[
+  {
+    "id": "f826fe66-bc06-4797-a0fb-66633dfd94c0",
+    "name": "ndjdnfjk",
+    "email": "arbabhussan63@gmail.com",
+    "password": "$2a$10$E/jC2c2SwgSQhfxRMDZ7deHf5CTAYBCAvOAL3zoh/T1j.LH0ilLaq",
+    "isVerified": false,
+    "verificationToken": "b8cf8ad7-c716-44e6-bfe6-6aebe3a5c054",
+    "resetPasswordToken": null,
+    "resetPasswordExpires": null,
+    "lastLogin": null,
+    "loginStreak": 0,
+    "lastLoginDate": null,
+    "earnings": 0,
+    "connectedAccounts": [],
+    "points": 0,
+    "createdAt": "2025-10-29T15:16:19.265Z",
+    "updatedAt": "2025-10-29T15:16:19.265Z"
+  }
+]

@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SocialEarn - Earn Through Social Media</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .hero-bg {
+            background: linear-gradient(135deg, #3B82F6 0%, #1E40AF 100%);
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+    <style>
+        .modal {
+            transition: opacity 0.25s ease;
+        }
+        .modal-active {
+            overflow-x: hidden;
+            overflow-y: visible !important;
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold text-blue-600">SocialEarn</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="#features" class="text-gray-700 hover:text-blue-600">Features</a>
+                    <a href="#how-it-works" class="text-gray-700 hover:text-blue-600">How it Works</a>
+                    <a href="#rewards" class="text-gray-700 hover:text-blue-600">Rewards</a>
+                    <button class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700">Sign Up</button>
+                    <button class="bg-gray-200 text-gray-700 px-6 py-2 rounded-full hover:bg-gray-300">Login</button>
+                </div>
+                <div class="md:hidden">
+                    <button id="menu-btn" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <a href="#features" class="block py-2 px-4 text-sm hover:bg-gray-100">Features</a>
+            <a href="#how-it-works" class="block py-2 px-4 text-sm hover:bg-gray-100">How it Works</a>
+            <a href="#rewards" class="block py-2 px-4 text-sm hover:bg-gray-100">Rewards</a>
+            <div class="p-4 space-y-2">
+                <button class="w-full bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700">Sign Up</button>
+                <button class="w-full bg-gray-200 text-gray-700 px-4 py-2 rounded-full hover:bg-gray-300">Login</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-bg text-white pt-32 pb-20">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-8 md:mb-0">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-6">
+                        Earn Money Through Your Social Media Presence
+                    </h1>
+                    <p class="text-lg mb-8">
+                        Connect your social media accounts, complete simple tasks, and earn real money. Withdraw instantly through EasyPaisa or JazzCash.
+                    </p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                        <button class="bg-white text-blue-600 px-8 py-3 rounded-full hover:bg-gray-100 transition duration-300 font-semibold">
+                            Get Started
+                        </button>
+                        <button class="bg-blue-700 text-white px-8 py-3 rounded-full hover:bg-blue-800 transition duration-300 font-semibold">
+                            Learn More
+                        </button>
+                    </div>
+                </div>
+                <div class="md:w-1/2 mt-8 md:mt-0">
+                    <img src="./WEB-600-x-400.webp" alt="App Preview" class="rounded-lg shadow-2xl">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-white">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">Why Choose SocialEarn?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg card-hover">
+                    <div class="text-4xl text-blue-600 mb-4">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Daily Rewards</h3>
+                    <p class="text-gray-600">Earn 100 PKR daily just by staying logged in for 24 hours. Simple and guaranteed earnings.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg card-hover">
+                    <div class="text-4xl text-blue-600 mb-4">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Easy Integration</h3>
+                    <p class="text-gray-600">Connect WhatsApp, Facebook, and TikTok with just one click. Secure and hassle-free.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg card-hover">
+                    <div class="text-4xl text-blue-600 mb-4">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Instant Withdrawals</h3>
+                    <p class="text-gray-600">Withdraw your earnings instantly via EasyPaisa or JazzCash. No minimum withdrawal limit.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="py-20 bg-gray-50">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">How It Works</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">1</div>
+                    <h3 class="text-xl font-semibold mb-2">Sign Up</h3>
+                    <p class="text-gray-600">Create your account in minutes with basic information</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">2</div>
+                    <h3 class="text-xl font-semibold mb-2">Connect Accounts</h3>
+                    <p class="text-gray-600">Link your WhatsApp and social media accounts securely</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">3</div>
+                    <h3 class="text-xl font-semibold mb-2">Stay Active</h3>
+                    <p class="text-gray-600">Keep your account active and complete simple tasks</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">4</div>
+                    <h3 class="text-xl font-semibold mb-2">Get Paid</h3>
+                    <p class="text-gray-600">Withdraw your earnings to EasyPaisa or JazzCash</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rewards Section -->
+    <section id="rewards" class="py-20 bg-white">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">Earning Opportunities</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gray-50 p-8 rounded-lg shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl text-blue-600 mr-4">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3 class="text-2xl font-semibold">Daily Login Rewards</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Earn 100 PKR every day just by keeping your account active for 24 hours.</p>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            No complex tasks required
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            Automatic tracking system
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            Daily guaranteed earnings
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-gray-50 p-8 rounded-lg shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="text-3xl text-blue-600 mr-4">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <h3 class="text-2xl font-semibold">Bonus Tasks</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Complete additional tasks to earn extra rewards through your social media accounts.</p>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            Social media engagement tasks
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            WhatsApp activity monitoring
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            Bonus rewards for consistent activity
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sign Up Modal -->
+    <div id="signup-modal" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-50">
+        <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
+        
+        <div class="modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
+            <div class="modal-content py-4 text-left px-6">
+                <!-- Title -->
+                <div class="flex justify-between items-center pb-3">
+                    <p class="text-2xl font-bold text-blue-600">Sign Up</p>
+                    <div class="modal-close cursor-pointer z-50">
+                        <svg class="fill-current text-gray-500" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                            <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Form -->
+                <form id="signup-form" class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="signup-name">Full Name</label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="signup-name" type="text" placeholder="Enter your full name" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="signup-email">Email</label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="signup-email" type="email" placeholder="Enter your email" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="signup-password">Password</label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="signup-password" type="password" placeholder="Create a password" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="signup-confirm-password">Confirm Password</label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="signup-confirm-password" type="password" placeholder="Confirm your password" required>
+                    </div>
+                    <div id="signup-error" class="text-red-500 text-sm hidden"></div>
+                    <div class="flex justify-end pt-2">
+                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 mr-2">Sign Up</button>
+                        <button type="button" class="modal-close bg-gray-300 text-gray-700 px-4 py-2 rounded-full hover:bg-gray-400">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-50">
+        <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
+        
+        <div class="modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
+            <div class="modal-content py-4 text-left px-6">
+                <!-- Title -->
+                <div class="flex justify-between items-center pb-3">
+                    <p class="text-2xl font-bold text-blue-600">Login</p>
+                    <div class="modal-close cursor-pointer z-50">
+                        <svg class="fill-current text-gray-500" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                            <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Form -->
+                <form id="login-form" class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="login-email">Email</label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="login-email" type="email" placeholder="Enter your email" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="login-password">Password</label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="login-password" type="password" placeholder="Enter your password" required>
+                    </div>
+                    <div id="login-error" class="text-red-500 text-sm hidden"></div>
+                    <div class="flex justify-end pt-2">
+                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 mr-2">Login</button>
+                        <button type="button" class="modal-close bg-gray-300 text-gray-700 px-4 py-2 rounded-full hover:bg-gray-400">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Section (shown after login) -->
+    <section id="dashboard" class="py-20 bg-gray-50 hidden">
+        <div class="max-w-4xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-8">Your Dashboard</h2>
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <div id="dashboard-info" class="mb-6">
+                    <!-- Filled by JS -->
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <div class="p-4 border rounded text-center">
+                        <h3 class="font-semibold">Points</h3>
+                        <p id="dashboard-points" class="text-2xl">0</p>
+                    </div>
+                    <div class="p-4 border rounded text-center">
+                        <h3 class="font-semibold">Rupees (from points)</h3>
+                        <p id="dashboard-rupees" class="text-2xl">0</p>
+                    </div>
+                    <div class="p-4 border rounded text-center">
+                        <h3 class="font-semibold">Total Earnings</h3>
+                        <p id="dashboard-earnings" class="text-2xl">0</p>
+                    </div>
+                </div>
+
+                <h3 class="font-semibold mb-4">Connect Accounts</h3>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <button id="connect-whatsapp" class="bg-green-500 text-white px-4 py-2 rounded">Connect WhatsApp</button>
+                    <button id="connect-tiktok" class="bg-pink-500 text-white px-4 py-2 rounded">Connect TikTok</button>
+                    <button id="connect-facebook" class="bg-blue-600 text-white px-4 py-2 rounded">Connect Facebook</button>
+                </div>
+
+                <div class="mt-6">
+                    <button id="logout-btn" class="bg-gray-300 text-gray-800 px-4 py-2 rounded">Logout</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">SocialEarn</h3>
+                    <p class="text-gray-400">Earn money through your social media presence</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Home</a></li>
+                        <li><a href="#features" class="text-gray-400 hover:text-white">Features</a></li>
+                        <li><a href="#how-it-works" class="text-gray-400 hover:text-white">How it Works</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Legal</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Contact</h4>
+                    <p class="text-gray-400">Email: hussyn763@gmail.com</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+                <p class="text-gray-400">&copy; 2025 SocialEarn. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menu-btn').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offset = 80; // Accounting for fixed header
+                    const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - offset;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                    // Close mobile menu if open
+                    document.getElementById('mobile-menu').classList.add('hidden');
+                }
+            });
+        });
+
+        // Modal functionality
+        const modals = {
+            signup: document.getElementById('signup-modal'),
+            login: document.getElementById('login-modal')
+        };
+
+        // Open modal function
+        function openModal(modalType) {
+            modals[modalType].classList.remove('opacity-0', 'pointer-events-none');
+            document.body.classList.add('modal-active');
+        }
+
+        // Close modal function
+        function closeModal(modalType) {
+            modals[modalType].classList.add('opacity-0', 'pointer-events-none');
+            document.body.classList.remove('modal-active');
+        }
+
+        // Add click events to all modal close buttons
+        document.querySelectorAll('.modal-close').forEach(button => {
+            button.addEventListener('click', function() {
+                const modal = this.closest('.modal');
+                if (modal.id === 'signup-modal') {
+                    closeModal('signup');
+                } else {
+                    closeModal('login');
+                }
+            });
+        });
+
+        // Close modals when clicking outside
+        window.addEventListener('click', function(e) {
+            Object.keys(modals).forEach(modalType => {
+                if (e.target === modals[modalType]) {
+                    closeModal(modalType);
+                }
+            });
+        });
+
+        // Add click events to signup and login buttons
+        document.querySelectorAll('button').forEach(button => {
+            if (button.textContent.trim() === 'Sign Up') {
+                button.addEventListener('click', () => openModal('signup'));
+            } else if (button.textContent.trim() === 'Login') {
+                button.addEventListener('click', () => openModal('login'));
+            }
+        });
+
+        // API URL
+        const API_URL = 'http://localhost:5000/api';
+
+        // Form validation and submission
+        document.getElementById('signup-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const name = document.getElementById('signup-name').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const confirmPassword = document.getElementById('signup-confirm-password').value;
+            const errorDiv = document.getElementById('signup-error');
+
+            // Reset error message
+            errorDiv.classList.add('hidden');
+
+            // Validate email format
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                errorDiv.textContent = 'Please enter a valid email address';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            // Validate password length
+            if (password.length < 6) {
+                errorDiv.textContent = 'Password must be at least 6 characters long';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            // Check if passwords match
+            if (password !== confirmPassword) {
+                errorDiv.textContent = 'Passwords do not match';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name,
+                        email,
+                        password
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.message || 'Error during registration');
+                }
+
+                alert(data.message);
+                closeModal('signup');
+                this.reset();
+            } catch (error) {
+                errorDiv.textContent = error.message;
+                errorDiv.classList.remove('hidden');
+            }
+        });
+
+        document.getElementById('login-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            const errorDiv = document.getElementById('login-error');
+
+            // Reset error message
+            errorDiv.classList.add('hidden');
+
+            try {
+                const response = await fetch(`${API_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email,
+                        password
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.message || 'Error during login');
+                }
+
+                // Store token and user data
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('user', JSON.stringify(data.user));
+
+                alert(`Welcome back ${data.user.name}! Your current earnings: ${data.user.earnings} PKR`);
+                closeModal('login');
+                this.reset();
+                // Show dashboard
+                showDashboard();
+
+                // Redirect to dashboard (you'll need to create this page)
+                // window.location.href = 'dashboard.html';
+            } catch (error) {
+                errorDiv.textContent = error.message;
+                errorDiv.classList.remove('hidden');
+            }
+        });
+
+        // Add password recovery functionality
+        function showForgotPasswordForm() {
+            const loginForm = document.querySelector('#login-form');
+            const currentContent = loginForm.innerHTML;
+            
+            loginForm.innerHTML = `
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="recovery-email">Email</label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="recovery-email" type="email" placeholder="Enter your email" required>
+                </div>
+                <div id="recovery-error" class="text-red-500 text-sm hidden"></div>
+                <div class="flex justify-end pt-2">
+                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 mr-2">Send Recovery Email</button>
+                    <button type="button" onclick="restoreLoginForm()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-full hover:bg-gray-400">Back to Login</button>
+                </div>
+            `;
+
+            loginForm.onsubmit = async function(e) {
+                e.preventDefault();
+                const email = document.getElementById('recovery-email').value;
+                const errorDiv = document.getElementById('recovery-error');
+
+                try {
+                    const response = await fetch(`${API_URL}/auth/forgot-password`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ email })
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(data.message || 'Error requesting password reset');
+                    }
+
+                    alert(data.message);
+                    restoreLoginForm();
+                } catch (error) {
+                    errorDiv.textContent = error.message;
+                    errorDiv.classList.remove('hidden');
+                }
+            };
+        }
+
+        function restoreLoginForm() {
+            location.reload();
+        }
+
+        // Add "Forgot Password?" link to login form
+        const loginFormButtons = document.querySelector('#login-form .flex.justify-end');
+        const forgotPasswordLink = document.createElement('button');
+        forgotPasswordLink.type = 'button';
+        forgotPasswordLink.className = 'text-blue-600 hover:text-blue-800 text-sm mr-auto';
+        forgotPasswordLink.textContent = 'Forgot Password?';
+        forgotPasswordLink.onclick = showForgotPasswordForm;
+        loginFormButtons.insertBefore(forgotPasswordLink, loginFormButtons.firstChild);
+
+        // Show dashboard after login if token exists
+        function showDashboard() {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+            fetch(`${API_URL}/user/dashboard`, {
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data && data.email) {
+                    renderDashboard(data);
+                }
+            })
+            .catch(err => console.error('Error fetching dashboard', err));
+        }
+
+        function renderDashboard(data) {
+            // Show dashboard section
+            document.getElementById('dashboard').classList.remove('hidden');
+            // Hide main hero to focus on dashboard (optionally)
+            window.scrollTo({ top: document.getElementById('dashboard').offsetTop - 80, behavior: 'smooth' });
+
+            document.getElementById('dashboard-info').innerHTML = `
+                <p class="text-gray-700">Logged in as <strong>${data.name}</strong> (${data.email})</p>
+                <p class="text-gray-600 text-sm">Connected accounts: ${data.connectedAccounts.join(', ') || 'None'}</p>
+            `;
+            document.getElementById('dashboard-points').textContent = data.points || 0;
+            document.getElementById('dashboard-rupees').textContent = data.rupeesFromPoints || 0;
+            document.getElementById('dashboard-earnings').textContent = data.earnings || 0;
+
+            // Wire up connect buttons
+            document.getElementById('connect-whatsapp').onclick = () => connectProvider('whatsapp');
+            document.getElementById('connect-tiktok').onclick = () => connectProvider('tiktok');
+            document.getElementById('connect-facebook').onclick = () => connectProvider('facebook');
+
+            document.getElementById('logout-btn').onclick = logout;
+        }
+
+        async function connectProvider(provider) {
+            const token = localStorage.getItem('token');
+            if (!token) { alert('You must be logged in'); return; }
+
+            try {
+                const res = await fetch(`${API_URL}/user/connect-account`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify({ provider })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.message || 'Error connecting');
+                alert(data.message + '. You earned points!');
+                // Refresh dashboard
+                showDashboard();
+            } catch (err) {
+                alert(err.message || 'Error connecting account');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            // Hide dashboard
+            document.getElementById('dashboard').classList.add('hidden');
+            alert('Logged out');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // If already logged in, show dashboard on load
+        document.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('token')) {
+                showDashboard();
+            }
+        });
+    </script>
+</body>
+</html>
