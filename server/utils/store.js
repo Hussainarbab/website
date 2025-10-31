@@ -133,6 +133,10 @@ async function updateUser(id, updates) {
     const idx = users.findIndex(x => x.id === String(id) || x._id === String(id));
     if (idx === -1) return null;
     const user = users[idx];
+    // If password is being updated in file-mode, hash it
+    if (updates && updates.password) {
+        updates.password = await bcrypt.hash(updates.password, 10);
+    }
     Object.assign(user, updates);
     user.updatedAt = new Date().toISOString();
     users[idx] = user;

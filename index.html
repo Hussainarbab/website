@@ -30,15 +30,16 @@
     <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
         <div class="max-w-6xl mx-auto px-4">
             <div class="flex justify-between items-center py-4">
-                <div class="flex items-center">
+                    <div class="flex items-center">
                     <span class="text-2xl font-bold text-blue-600">SocialEarn</span>
-                </div>
+                    </div>
                 <div class="hidden md:flex items-center space-x-4">
                     <a href="#features" class="text-gray-700 hover:text-blue-600">Features</a>
                     <a href="#how-it-works" class="text-gray-700 hover:text-blue-600">How it Works</a>
                     <a href="#rewards" class="text-gray-700 hover:text-blue-600">Rewards</a>
                     <button class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700">Sign Up</button>
                     <button class="bg-gray-200 text-gray-700 px-6 py-2 rounded-full hover:bg-gray-300">Login</button>
+                    <span id="backend-status" title="Click to change API URL" class="ml-2 text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-600 cursor-pointer">Backend: checking…</span>
                 </div>
                 <div class="md:hidden">
                     <button id="menu-btn" class="text-gray-500 hover:text-gray-700 focus:outline-none">
@@ -61,6 +62,7 @@
         </div>
     </nav>
 
+    <div id="landing">
     <!-- Hero Section -->
     <section class="hero-bg text-white pt-32 pb-20">
         <div class="max-w-6xl mx-auto px-4">
@@ -74,8 +76,8 @@
                     </p>
                     <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                         <button class="bg-white text-blue-600 px-8 py-3 rounded-full hover:bg-gray-100 transition duration-300 font-semibold">
-                            Get Started
-                        </button>
+                Get Started
+            </button>
                         <button class="bg-blue-700 text-white px-8 py-3 rounded-full hover:bg-blue-800 transition duration-300 font-semibold">
                             Learn More
                         </button>
@@ -146,6 +148,7 @@
             </div>
         </div>
     </section>
+    </div>
 
     <!-- Rewards Section -->
     <section id="rewards" class="py-20 bg-white">
@@ -214,8 +217,8 @@
                     <div class="modal-close cursor-pointer z-50">
                         <svg class="fill-current text-gray-500" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
                             <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
-                        </svg>
-                    </div>
+                    </svg>
+                </div>
                 </div>
 
                 <!-- Form -->
@@ -244,7 +247,7 @@
                 </form>
             </div>
         </div>
-    </div>
+            </div>
 
     <!-- Login Modal -->
     <div id="login-modal" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-50">
@@ -258,8 +261,8 @@
                     <div class="modal-close cursor-pointer z-50">
                         <svg class="fill-current text-gray-500" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
                             <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
-                        </svg>
-                    </div>
+                    </svg>
+                </div>
                 </div>
 
                 <!-- Form -->
@@ -280,42 +283,126 @@
                 </form>
             </div>
         </div>
-    </div>
+            </div>
 
     <!-- Dashboard Section (shown after login) -->
-    <section id="dashboard" class="py-20 bg-gray-50 hidden">
-        <div class="max-w-4xl mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-8">Your Dashboard</h2>
-            <div class="bg-white p-6 rounded-lg shadow-lg">
-                <div id="dashboard-info" class="mb-6">
-                    <!-- Filled by JS -->
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                    <div class="p-4 border rounded text-center">
-                        <h3 class="font-semibold">Points</h3>
-                        <p id="dashboard-points" class="text-2xl">0</p>
+    <section id="dashboard" class="pt-24 pb-12 bg-gray-50 hidden">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+                <!-- Sidebar -->
+                <aside class="lg:col-span-1 bg-white rounded-xl shadow-md p-4 h-fit">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold" id="user-initial">U</div>
+                        <div>
+                            <div class="font-semibold" id="user-name">User</div>
+                            <div class="text-xs text-gray-500" id="user-email">user@email.com</div>
+                        </div>
                     </div>
-                    <div class="p-4 border rounded text-center">
-                        <h3 class="font-semibold">Rupees (from points)</h3>
-                        <p id="dashboard-rupees" class="text-2xl">0</p>
-                    </div>
-                    <div class="p-4 border rounded text-center">
-                        <h3 class="font-semibold">Total Earnings</h3>
-                        <p id="dashboard-earnings" class="text-2xl">0</p>
-                    </div>
-                </div>
+                    <nav class="space-y-2" id="sidebar-tabs">
+                        <button id="tab-overview" data-tab="overview" class="w-full text-left px-3 py-2 rounded-md bg-blue-50 text-blue-700 font-medium">Overview</button>
+                        <button id="tab-tasks" data-tab="tasks" class="w-full text-left px-3 py-2 rounded-md hover:bg-gray-50">Tasks</button>
+                        <button id="tab-connections" data-tab="connections" class="w-full text-left px-3 py-2 rounded-md hover:bg-gray-50">Connections</button>
+                        <button id="tab-wallet" data-tab="wallet" class="w-full text-left px-3 py-2 rounded-md hover:bg-gray-50">Wallet</button>
+                    </nav>
+                    <hr class="my-4">
+                    <button id="logout-btn" class="w-full px-3 py-2 rounded-md bg-gray-100 hover:bg-gray-200">Logout</button>
+                </aside>
 
-                <h3 class="font-semibold mb-4">Connect Accounts</h3>
-                <div class="flex flex-col sm:flex-row gap-4">
-                    <button id="connect-whatsapp" class="bg-green-500 text-white px-4 py-2 rounded">Connect WhatsApp</button>
-                    <button id="connect-tiktok" class="bg-pink-500 text-white px-4 py-2 rounded">Connect TikTok</button>
-                    <button id="connect-facebook" class="bg-blue-600 text-white px-4 py-2 rounded">Connect Facebook</button>
-                </div>
+                <!-- Main -->
+                <main class="lg:col-span-4 space-y-6">
+                    <!-- Overview Panel -->
+                    <section id="panel-overview">
+                        <div class="bg-white rounded-xl shadow-md p-4 flex items-center justify-between">
+                            <div>
+                                <h2 class="text-2xl font-bold">Dashboard</h2>
+                                <p class="text-sm text-gray-500">Welcome back, <span id="welcome-name">User</span></p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-sm text-gray-500">Balance</span>
+                                <span class="text-lg font-semibold text-blue-700" id="dashboard-earnings">0</span>
+                                <span class="text-sm">PKR</span>
+                            </div>
+                        </div>
+                        <div class="grid sm:grid-cols-2 xl:grid-cols-4 gap-4 mt-4">
+                            <div class="bg-white rounded-xl shadow p-5">
+                                <div class="text-gray-500 text-sm">Daily Reward</div>
+                                <div class="text-2xl font-bold">100 <span class="text-base font-medium">PKR</span></div>
+                                <div class="text-xs text-gray-400">Earn by staying active 24h</div>
+                            </div>
+                            <div class="bg-white rounded-xl shadow p-5">
+                                <div class="text-gray-500 text-sm">Points</div>
+                                <div id="dashboard-points" class="text-2xl font-bold">0</div>
+                                <div class="text-xs text-gray-400">From tasks and activity</div>
+                            </div>
+                            <div class="bg-white rounded-xl shadow p-5">
+                                <div class="text-gray-500 text-sm">Rupees from Points</div>
+                                <div id="dashboard-rupees" class="text-2xl font-bold">0</div>
+                                <div class="text-xs text-gray-400">Auto-converted</div>
+                            </div>
+                            <div class="bg-white rounded-xl shadow p-5">
+                                <div class="text-gray-500 text-sm">Connected</div>
+                                <div id="connected-count" class="text-2xl font-bold">0</div>
+                                <div class="text-xs text-gray-400">Accounts linked</div>
+                            </div>
+                        </div>
+                    </section>
 
-                <div class="mt-6">
-                    <button id="logout-btn" class="bg-gray-300 text-gray-800 px-4 py-2 rounded">Logout</button>
+                    <!-- Tasks Panel -->
+                    <section id="panel-tasks" class="hidden">
+                        <div class="bg-white rounded-xl shadow p-5">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="font-semibold">Today’s Tasks</h3>
+                                <button class="text-sm text-blue-600">View all</button>
+                            </div>
+                            <ul class="space-y-3" id="tasks-list">
+                                <li class="p-3 border rounded-md flex items-center justify-between">
+                                    <div>
+                                        <div class="font-medium">Connect WhatsApp Business</div>
+                                        <div class="text-xs text-gray-500">Start session via official API</div>
+                                    </div>
+                                    <button id="connect-whatsapp" class="px-3 py-1.5 rounded bg-green-600 text-white">Connect</button>
+                                </li>
+                                <li class="p-3 border rounded-md flex items-center justify-between">
+                                    <div>
+                                        <div class="font-medium">Link TikTok account</div>
+                                        <div class="text-xs text-gray-500">Authorize via OAuth</div>
+                                    </div>
+                                    <button id="connect-tiktok" class="px-3 py-1.5 rounded bg-pink-600 text-white">Connect</button>
+                                </li>
+                                <li class="p-3 border rounded-md flex items-center justify-between">
+                                    <div>
+                                        <div class="font-medium">Link Facebook account</div>
+                                        <div class="text-xs text-gray-500">Use Facebook Login</div>
+                                    </div>
+                                    <button id="connect-facebook" class="px-3 py-1.5 rounded bg-blue-600 text-white">Connect</button>
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <!-- Connections Panel -->
+                    <section id="panel-connections" class="hidden">
+                        <div class="bg-white rounded-xl shadow p-5">
+                            <h3 class="font-semibold mb-4">Connected Accounts</h3>
+                            <div id="connections-list" class="space-y-3 text-sm text-gray-700">No accounts linked yet.</div>
+                        </div>
+                    </section>
+
+                    <!-- Wallet Panel -->
+                    <section id="panel-wallet" class="hidden">
+                        <div class="bg-white rounded-xl shadow p-5">
+                            <h3 class="font-semibold mb-3">Wallet</h3>
+                            <div class="p-4 bg-gray-50 rounded-md mb-3">
+                                <div class="text-sm text-gray-500">Current Balance</div>
+                                <div class="text-2xl font-bold"><span id="wallet-balance">0</span> PKR</div>
+                            </div>
+                            <div class="grid sm:grid-cols-2 gap-2">
+                                <button id="withdraw-easypaisa" class="w-full py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700">Withdraw to Easypaisa</button>
+                                <button id="withdraw-jazzcash" class="w-full py-2 rounded-md bg-indigo-600 text-white hover:bg-indigo-700">Withdraw to JazzCash</button>
+                            </div>
                 </div>
+                    </section>
+                </main>
             </div>
         </div>
     </section>
@@ -353,6 +440,84 @@
             </div>
         </div>
     </footer>
+
+    <!-- Withdraw Modal -->
+    <div id="withdraw-modal" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-50">
+        <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
+        <div class="modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
+            <div class="modal-content py-4 text-left px-6">
+                <div class="flex justify-between items-center pb-3">
+                    <p class="text-2xl font-bold text-blue-600">Withdraw</p>
+                    <button id="withdraw-close" class="modal-close cursor-pointer z-50">
+                        <svg class="fill-current text-gray-500" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                            <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                        </svg>
+                    </button>
+                </div>
+                <form id="withdraw-form" class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Provider</label>
+                        <input id="w-provider" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 bg-gray-100" type="text" readonly>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="w-name">Full Name</label>
+                        <input id="w-name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" type="text" placeholder="Enter account holder name" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="w-number">Mobile Number</label>
+                        <input id="w-number" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" type="tel" placeholder="03XXXXXXXXX" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="w-points">Points to Withdraw</label>
+                        <input id="w-points" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" type="number" min="100" step="100" placeholder="e.g. 100, 200" required>
+                        <p class="text-xs text-gray-500 mt-1">Conversion: 100 points = 10 PKR</p>
+                    </div>
+                    <div id="withdraw-error" class="text-red-500 text-sm hidden"></div>
+                    <div class="flex justify-end pt-2">
+                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 mr-2">Confirm Withdraw</button>
+                        <button type="button" id="withdraw-cancel" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-full hover:bg-gray-400">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- WhatsApp Connect Modal -->
+    <div id="wa-modal" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-50">
+        <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
+        <div class="modal-container bg-white w-11/12 md:max-w-lg mx-auto rounded shadow-lg z-50 overflow-y-auto">
+            <div class="modal-content py-4 text-left px-6">
+                <div class="flex justify-between items-center pb-3">
+                    <p class="text-2xl font-bold text-green-600">Connect WhatsApp</p>
+                    <button id="wa-close" class="modal-close cursor-pointer z-50">
+                        <svg class="fill-current text-gray-500" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                            <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="border rounded p-3 flex items-center justify-center">
+                        <canvas id="wa-qr" class="w-full h-full max-w-[260px] max-h-[260px]"></canvas>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-1">Pairing Code</label>
+                        <div class="flex gap-2 items-center">
+                            <input id="wa-code" readonly class="flex-1 border rounded px-3 py-2 bg-gray-50" />
+                            <button id="wa-copy" class="px-3 py-2 border rounded hover:bg-gray-50">Copy</button>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2">Scan the QR or paste the code into your official WhatsApp Business pairing flow. Code expires in <span id="wa-expire">60</span>s.</p>
+                        <button id="wa-refresh" class="mt-3 px-3 py-2 bg-green-600 text-white rounded hover:bg-green-700">Refresh Code</button>
+                        <div class="mt-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-1">Your WhatsApp Number</label>
+                            <input id="wa-number" class="w-full border rounded px-3 py-2" type="tel" placeholder="03XXXXXXXXX" />
+                            <button id="wa-request-link" class="mt-2 px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Request Link</button>
+                            <div id="wa-status" class="text-xs text-gray-600 mt-1"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- JavaScript -->
     <script>
@@ -428,8 +593,14 @@
             }
         });
 
-        // API URL
-        const API_URL = 'http://localhost:5000/api';
+        // API URL (configurable)
+        function getApiUrl() {
+            return localStorage.getItem('api:url') || 'http://localhost:5000/api';
+        }
+        function setApiUrl(url) {
+            if (url && url.trim()) localStorage.setItem('api:url', url.trim());
+        }
+        let API_URL = getApiUrl();
 
         // Form validation and submission
         document.getElementById('signup-form').addEventListener('submit', async function(e) {
@@ -524,14 +695,10 @@
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('user', JSON.stringify(data.user));
 
-                alert(`Welcome back ${data.user.name}! Your current earnings: ${data.user.earnings} PKR`);
                 closeModal('login');
                 this.reset();
-                // Show dashboard
+                enterDashboard();
                 showDashboard();
-
-                // Redirect to dashboard (you'll need to create this page)
-                // window.location.href = 'dashboard.html';
             } catch (error) {
                 errorDiv.textContent = error.message;
                 errorDiv.classList.remove('hidden');
@@ -597,6 +764,55 @@
         forgotPasswordLink.onclick = showForgotPasswordForm;
         loginFormButtons.insertBefore(forgotPasswordLink, loginFormButtons.firstChild);
 
+        // Safe JSON parser to avoid HTML responses causing errors
+        async function parseJsonSafe(res) {
+            const ct = res.headers.get('content-type') || '';
+            if (!ct.includes('application/json')) {
+                const text = await res.text();
+                throw new Error(`Unexpected response (${res.status}). ${text.slice(0,120)}`);
+            }
+            return res.json();
+        }
+
+        // Dashboard tabs switching
+        const tabButtons = document.querySelectorAll('#sidebar-tabs [data-tab]');
+        const panels = {
+            overview: document.getElementById('panel-overview'),
+            tasks: document.getElementById('panel-tasks'),
+            connections: document.getElementById('panel-connections'),
+            wallet: document.getElementById('panel-wallet')
+        };
+        function switchTab(tab) {
+            Object.keys(panels).forEach(key => {
+                if (panels[key]) {
+                    if (key === tab) panels[key].classList.remove('hidden'); else panels[key].classList.add('hidden');
+                }
+            });
+            tabButtons.forEach(btn => {
+                if (btn.dataset.tab === tab) {
+                    btn.classList.add('bg-blue-50','text-blue-700','font-medium');
+                } else {
+                    btn.classList.remove('bg-blue-50','text-blue-700','font-medium');
+                }
+            });
+        }
+        tabButtons.forEach(btn => btn.addEventListener('click', () => switchTab(btn.dataset.tab)));
+        // Default tab
+        switchTab('overview');
+
+        // Landing/Dashboard toggling
+        function enterDashboard() {
+            const landing = document.getElementById('landing');
+            if (landing) landing.classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+        }
+        function showLanding() {
+            document.getElementById('dashboard').classList.add('hidden');
+            const landing = document.getElementById('landing');
+            if (landing) landing.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
         // Show dashboard after login if token exists
         function showDashboard() {
             const token = localStorage.getItem('token');
@@ -606,36 +822,304 @@
                     'Authorization': 'Bearer ' + token
                 }
             })
-            .then(res => res.json())
+            .then(res => res.ok ? parseJsonSafe(res) : Promise.reject(new Error('Failed to load dashboard')))
             .then(data => {
-                if (data && data.email) {
+                if (data && (data.email || data.name)) {
                     renderDashboard(data);
+                } else {
+                    const fallbackUser = JSON.parse(localStorage.getItem('user') || '{}');
+                    if (fallbackUser && (fallbackUser.email || fallbackUser.name)) {
+                        renderDashboard({
+                            name: fallbackUser.name || 'hussain',
+                            email: fallbackUser.email || 'arbabhussan62@gmail.com',
+                            earnings: fallbackUser.earnings || 0,
+                            points: fallbackUser.points || 0,
+                            rupeesFromPoints: fallbackUser.rupeesFromPoints || 0,
+                            connectedAccounts: fallbackUser.connectedAccounts || []
+                        });
+                    }
                 }
             })
-            .catch(err => console.error('Error fetching dashboard', err));
+            .catch(() => {
+                const fallbackUser = JSON.parse(localStorage.getItem('user') || '{}');
+                if (fallbackUser && (fallbackUser.email || fallbackUser.name)) {
+                    renderDashboard({
+                        name: fallbackUser.name || 'hussain',
+                        email: fallbackUser.email || 'arbabhussan62@gmail.com',
+                        earnings: fallbackUser.earnings || 0,
+                        points: fallbackUser.points || 0,
+                        rupeesFromPoints: fallbackUser.rupeesFromPoints || 0,
+                        connectedAccounts: fallbackUser.connectedAccounts || []
+                    });
+                }
+            });
         }
 
         function renderDashboard(data) {
-            // Show dashboard section
-            document.getElementById('dashboard').classList.remove('hidden');
-            // Hide main hero to focus on dashboard (optionally)
+            enterDashboard();
             window.scrollTo({ top: document.getElementById('dashboard').offsetTop - 80, behavior: 'smooth' });
 
-            document.getElementById('dashboard-info').innerHTML = `
-                <p class="text-gray-700">Logged in as <strong>${data.name}</strong> (${data.email})</p>
-                <p class="text-gray-600 text-sm">Connected accounts: ${data.connectedAccounts.join(', ') || 'None'}</p>
-            `;
+            // Header user details
+            document.getElementById('user-name').textContent = data.name || 'User';
+            document.getElementById('welcome-name').textContent = data.name || 'User';
+            document.getElementById('user-email').textContent = data.email || '';
+            document.getElementById('user-initial').textContent = (data.name || 'U').charAt(0).toUpperCase();
+
             document.getElementById('dashboard-points').textContent = data.points || 0;
             document.getElementById('dashboard-rupees').textContent = data.rupeesFromPoints || 0;
-            document.getElementById('dashboard-earnings').textContent = data.earnings || 0;
+            const earnings = data.earnings || 0;
+            document.getElementById('dashboard-earnings').textContent = earnings;
+            document.getElementById('wallet-balance').textContent = earnings;
+            document.getElementById('connected-count').textContent = (data.connectedAccounts || []).length;
 
             // Wire up connect buttons
-            document.getElementById('connect-whatsapp').onclick = () => connectProvider('whatsapp');
+            document.getElementById('connect-whatsapp').onclick = () => openWA();
             document.getElementById('connect-tiktok').onclick = () => connectProvider('tiktok');
             document.getElementById('connect-facebook').onclick = () => connectProvider('facebook');
 
             document.getElementById('logout-btn').onclick = logout;
+
+            // Populate connections list
+            const list = document.getElementById('connections-list');
+            const accounts = data.connectedAccounts || [];
+            if (list) {
+                if (accounts.length === 0) {
+                    list.textContent = 'No accounts linked yet.';
+                } else {
+                    list.innerHTML = '';
+                    accounts.forEach(acc => {
+                        const item = document.createElement('div');
+                        item.className = 'p-3 border rounded-md flex items-center justify-between';
+                        item.innerHTML = `<span class=\"capitalize\">${acc}</span><span class=\"text-green-600 text-xs\">Connected</span>`;
+                        list.appendChild(item);
+                    });
+                }
+            }
+
+            // Withdraw handlers (100 points => 10 PKR)
+            const easypaisaBtn = document.getElementById('withdraw-easypaisa');
+            const jazzcashBtn = document.getElementById('withdraw-jazzcash');
+            function doWithdraw(provider) {
+                const pointsEl = document.getElementById('dashboard-points');
+                const earningsEl = document.getElementById('dashboard-earnings');
+                const walletEl = document.getElementById('wallet-balance');
+                let points = parseInt(pointsEl.textContent || '0', 10) || 0;
+                let earnings = parseInt(earningsEl.textContent || '0', 10) || 0;
+                const chunks = Math.floor(points / 100);
+                if (chunks <= 0) {
+                    alert('Not enough points. You need at least 100 points to withdraw.');
+                    return;
+                }
+                const rupees = chunks * 10; // 100 pts -> 10 PKR
+                points -= chunks * 100;
+                earnings += rupees;
+                // Update UI
+                pointsEl.textContent = String(points);
+                earningsEl.textContent = String(earnings);
+                walletEl.textContent = String(earnings);
+                document.getElementById('dashboard-rupees').textContent = String(Math.floor(points / 100) * 10);
+                // Persist to localStorage user
+                const user = JSON.parse(localStorage.getItem('user') || '{}');
+                user.points = points;
+                user.earnings = earnings;
+                user.rupeesFromPoints = Math.floor(points / 100) * 10;
+                localStorage.setItem('user', JSON.stringify(user));
+                alert(`Withdrew ${rupees} PKR to ${provider}. (${chunks * 100} points converted)`);
+                // Optional backend notify (non-blocking)
+                const token = localStorage.getItem('token');
+                if (token) {
+                    fetch(`${API_URL}/user/withdraw`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + token
+                        },
+                        body: JSON.stringify({ provider, rupees })
+                    }).catch(() => {});
+                }
+            }
+            // Wire buttons to open modal
+            easypaisaBtn && (easypaisaBtn.onclick = () => openWithdraw('Easypaisa'));
+            jazzcashBtn && (jazzcashBtn.onclick = () => openWithdraw('JazzCash'));
         }
+
+        // Withdraw modal logic
+        const withdrawModal = document.getElementById('withdraw-modal');
+        function openWithdraw(provider) {
+            // Prefill provider and sensible defaults
+            document.getElementById('w-provider').value = provider;
+            const local = JSON.parse(localStorage.getItem('user') || '{}');
+            document.getElementById('w-name').value = local.name || '';
+            document.getElementById('w-number').value = local.number || '';
+            document.getElementById('w-points').value = '';
+            document.getElementById('withdraw-error').classList.add('hidden');
+            withdrawModal.classList.remove('opacity-0','pointer-events-none');
+            document.body.classList.add('modal-active');
+        }
+        function closeWithdraw() {
+            withdrawModal.classList.add('opacity-0','pointer-events-none');
+            document.body.classList.remove('modal-active');
+        }
+        document.getElementById('withdraw-close').onclick = closeWithdraw;
+        document.getElementById('withdraw-cancel').onclick = closeWithdraw;
+        withdrawModal.addEventListener('click', (e) => { if (e.target === withdrawModal) closeWithdraw(); });
+
+        document.getElementById('withdraw-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const provider = document.getElementById('w-provider').value;
+            const fullName = document.getElementById('w-name').value.trim();
+            const number = document.getElementById('w-number').value.trim();
+            let pointsToWithdraw = parseInt(document.getElementById('w-points').value, 10) || 0;
+            const err = document.getElementById('withdraw-error');
+            err.classList.add('hidden');
+            
+            // Basic validation
+            if (!fullName || !number) {
+                err.textContent = 'Please enter your name and mobile number.';
+                err.classList.remove('hidden');
+                return;
+            }
+            const pointsEl = document.getElementById('dashboard-points');
+            const currentPoints = parseInt(pointsEl.textContent || '0', 10) || 0;
+            if (pointsToWithdraw < 100 || pointsToWithdraw % 100 !== 0) {
+                err.textContent = 'Points must be at least 100 and in multiples of 100.';
+                err.classList.remove('hidden');
+                return;
+            }
+            if (pointsToWithdraw > currentPoints) {
+                err.textContent = 'You do not have enough points.';
+                err.classList.remove('hidden');
+                return;
+            }
+
+            // Convert and apply
+            const rupees = (pointsToWithdraw / 100) * 10;
+            // Reuse doWithdraw internals by setting exact points chunk
+            // Update UI and localStorage
+            const earningsEl = document.getElementById('dashboard-earnings');
+            const walletEl = document.getElementById('wallet-balance');
+            let points = currentPoints - pointsToWithdraw;
+            let earnings = (parseInt(earningsEl.textContent || '0', 10) || 0) + rupees;
+            pointsEl.textContent = String(points);
+            earningsEl.textContent = String(earnings);
+            walletEl.textContent = String(earnings);
+            document.getElementById('dashboard-rupees').textContent = String(Math.floor(points / 100) * 10);
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            user.points = points;
+            user.earnings = earnings;
+            user.rupeesFromPoints = Math.floor(points / 100) * 10;
+            user.number = number;
+            localStorage.setItem('user', JSON.stringify(user));
+
+            // Optional backend call
+            const token = localStorage.getItem('token');
+            if (token) {
+                fetch(`${API_URL}/user/withdraw`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify({ provider, rupees, points: pointsToWithdraw, name: fullName, number })
+                }).catch(() => {});
+            }
+
+            alert(`Withdrawal requested: ${pointsToWithdraw} points -> ${rupees} PKR to ${provider}.`);
+            closeWithdraw();
+        });
+
+        // WhatsApp modal + code fetch
+        const waModal = document.getElementById('wa-modal');
+        let waTimer = null;
+        function drawCodeAsQRLike(canvas, code) {
+            const ctx = canvas.getContext('2d');
+            const size = Math.min(260, canvas.parentElement.clientWidth - 16);
+            canvas.width = size; canvas.height = size;
+            ctx.fillStyle = '#fff'; ctx.fillRect(0,0,size,size);
+            const cells = 21;
+            const cell = size / cells;
+            // simple hash pattern (placeholder, not real QR)
+            let h = 0;
+            for (let i=0;i<code.length;i++) h = (h*31 + code.charCodeAt(i))>>>0;
+            for (let y=0;y<cells;y++) {
+                for (let x=0;x<cells;x++) {
+                    const v = (x*y + x + y + h) % 7;
+                    if (v===0) {
+                        ctx.fillStyle = '#111';
+                        ctx.fillRect(Math.floor(x*cell), Math.floor(y*cell), Math.ceil(cell-1), Math.ceil(cell-1));
+                    }
+                }
+            }
+            // finder squares
+            ctx.fillStyle = '#16a34a';
+            const f = Math.floor(cell*4.5);
+            ctx.fillRect(0,0,f,f);
+            ctx.fillRect(size-f,0,f,f);
+            ctx.fillRect(0,size-f,f,f);
+        }
+        function openWA() {
+            const token = localStorage.getItem('token');
+            if (!token) { alert('Please log in first.'); return; }
+            fetch(`${API_URL}/whatsapp/start`, { method:'POST', headers:{ 'Authorization':'Bearer '+token } })
+                .then(r => r.ok ? parseJsonSafe(r) : Promise.reject(new Error('Failed to start pairing')))
+                .then(d => {
+                    const code = d.code || Math.random().toString(36).slice(2,8).toUpperCase();
+                    document.getElementById('wa-code').value = code;
+                    drawCodeAsQRLike(document.getElementById('wa-qr'), code);
+                    let left = d.expiresInSeconds || 60;
+                    document.getElementById('wa-expire').textContent = String(left);
+                    if (waTimer) clearInterval(waTimer);
+                    waTimer = setInterval(()=>{
+                        left--; if (left<=0) { clearInterval(waTimer); } 
+                        document.getElementById('wa-expire').textContent = String(Math.max(left,0));
+                    },1000);
+                    waModal.classList.remove('opacity-0','pointer-events-none');
+                    document.body.classList.add('modal-active');
+                })
+                .catch(()=>{
+                    // fallback open with random code
+                    const code = Math.random().toString(36).slice(2,8).toUpperCase();
+                    document.getElementById('wa-code').value = code;
+                    drawCodeAsQRLike(document.getElementById('wa-qr'), code);
+                    waModal.classList.remove('opacity-0','pointer-events-none');
+                    document.body.classList.add('modal-active');
+                });
+        }
+        function closeWA() {
+            waModal.classList.add('opacity-0','pointer-events-none');
+            document.body.classList.remove('modal-active');
+            if (waTimer) clearInterval(waTimer);
+        }
+        document.getElementById('wa-close').onclick = closeWA;
+        waModal.addEventListener('click', (e) => { if (e.target === waModal) closeWA(); });
+        document.getElementById('wa-copy').onclick = () => {
+            const v = document.getElementById('wa-code').value;
+            navigator.clipboard?.writeText(v);
+        };
+        document.getElementById('wa-refresh').onclick = openWA;
+        document.getElementById('wa-request-link').onclick = async () => {
+            const token = localStorage.getItem('token');
+            if (!token) { alert('Please log in first.'); return; }
+            const number = (document.getElementById('wa-number').value || '').trim();
+            const statusEl = document.getElementById('wa-status');
+            statusEl.textContent = '';
+            if (!number) { statusEl.textContent = 'Please enter your WhatsApp number.'; return; }
+            try {
+                const res = await fetch(`${API_URL}/whatsapp/request`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+                    body: JSON.stringify({ number })
+                });
+                if (!res.ok) {
+                    const text = await res.text();
+                    throw new Error(text || 'Failed to request link');
+                }
+                await parseJsonSafe(res);
+                statusEl.textContent = 'A confirmation message has been sent to your WhatsApp. Please approve.';
+            } catch (e) {
+                statusEl.textContent = e.message || 'Failed to request link';
+            }
+        };
 
         async function connectProvider(provider) {
             const token = localStorage.getItem('token');
@@ -650,8 +1134,11 @@
                     },
                     body: JSON.stringify({ provider })
                 });
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.message || 'Error connecting');
+                if (!res.ok) {
+                    const text = await res.text();
+                    throw new Error(text || 'Error connecting');
+                }
+                const data = await parseJsonSafe(res);
                 alert(data.message + '. You earned points!');
                 // Refresh dashboard
                 showDashboard();
@@ -663,15 +1150,45 @@
         function logout() {
             localStorage.removeItem('token');
             localStorage.removeItem('user');
-            // Hide dashboard
-            document.getElementById('dashboard').classList.add('hidden');
-            alert('Logged out');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            showLanding();
         }
 
-        // If already logged in, show dashboard on load
+        // If already logged in, show dashboard (don't show landing)
         document.addEventListener('DOMContentLoaded', () => {
+            // Backend health checker
+            const statusEl = document.getElementById('backend-status');
+            async function checkHealth() {
+                const url = getApiUrl();
+                try {
+                    const controller = new AbortController();
+                    const t = setTimeout(() => controller.abort(), 4000);
+                    const res = await fetch(`${url}/health`, { signal: controller.signal });
+                    clearTimeout(t);
+                    if (res.ok) {
+                        statusEl.textContent = 'Backend: online';
+                        statusEl.className = 'ml-2 text-xs px-2 py-1 rounded-full bg-green-100 text-green-700 cursor-pointer';
+                    } else {
+                        throw new Error('unhealthy');
+                    }
+                } catch {
+                    statusEl.textContent = 'Backend: offline';
+                    statusEl.className = 'ml-2 text-xs px-2 py-1 rounded-full bg-red-100 text-red-700 cursor-pointer';
+                }
+            }
+            statusEl?.addEventListener('click', () => {
+                const current = getApiUrl();
+                const input = prompt('Set API URL (example: http://localhost:5000/api)', current);
+                if (input) {
+                    setApiUrl(input);
+                    API_URL = getApiUrl();
+                    checkHealth();
+                }
+            });
+            checkHealth();
+            setInterval(checkHealth, 15000);
+
             if (localStorage.getItem('token')) {
+                enterDashboard();
                 showDashboard();
             }
         });

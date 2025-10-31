@@ -6,8 +6,8 @@
     "password": "$2a$10$E/jC2c2SwgSQhfxRMDZ7deHf5CTAYBCAvOAL3zoh/T1j.LH0ilLaq",
     "isVerified": false,
     "verificationToken": "b8cf8ad7-c716-44e6-bfe6-6aebe3a5c054",
-    "resetPasswordToken": null,
-    "resetPasswordExpires": null,
+    "resetPasswordToken": "560925c7-b068-4a73-9903-09320af86964",
+    "resetPasswordExpires": 1761902800592,
     "lastLogin": null,
     "loginStreak": 0,
     "lastLoginDate": null,
@@ -15,6 +15,28 @@
     "connectedAccounts": [],
     "points": 0,
     "createdAt": "2025-10-29T15:16:19.265Z",
-    "updatedAt": "2025-10-29T15:16:19.265Z"
+    "updatedAt": "2025-10-31T08:26:40.593Z"
+  },
+  {
+    "id": "94efa853-89ef-458c-97ed-aa8a81a150f6",
+    "name": "hussain",
+    "email": "arbabhussan62@gmail.com",
+    "password": "$2a$10$bPP/5B5ZvF.4OF33//aUkO3qDLwBqxZBYcvWhRsCTJ/UyTXqUw8su",
+    "isVerified": false,
+    "verificationToken": "4990be42-65c1-4b4c-9b02-f73a5f6fc3f8",
+    "resetPasswordToken": null,
+    "resetPasswordExpires": null,
+    "lastLogin": "2025-10-31T09:35:38.298Z",
+    "loginStreak": 5,
+    "lastLoginDate": "2025-10-31T09:35:38.298Z",
+    "earnings": 650,
+    "connectedAccounts": [
+      "whatsapp",
+      "tiktok",
+      "facebook"
+    ],
+    "points": 150,
+    "createdAt": "2025-10-31T08:40:45.249Z",
+    "updatedAt": "2025-10-31T09:35:38.300Z"
   }
 ]

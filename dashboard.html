@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Social Media Manager</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-100">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold text-blue-600">SocialEarn</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span id="userPoints" class="text-green-600 font-semibold"></span>
+                    <span id="userName" class="text-gray-700"></span>
+                    <button onclick="logout()" class="text-red-600 hover:text-red-800">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <!-- Platform Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <!-- WhatsApp Card -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center">
+                        <i class="fab fa-whatsapp text-4xl text-green-500"></i>
+                        <h3 class="ml-3 text-xl font-semibold">WhatsApp</h3>
+                    </div>
+                    <span id="whatsappStatus" class="text-sm font-medium rounded-full px-3 py-1 bg-gray-200">
+                        Not Connected
+                    </span>
+                </div>
+                <p class="text-gray-600 mb-4">Connect your WhatsApp account to start earning through automated responses.</p>
+                <button onclick="connectWhatsApp()" class="w-full bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition duration-200">
+                    Connect WhatsApp
+                </button>
+            </div>
+
+            <!-- Facebook Card -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center">
+                        <i class="fab fa-facebook text-4xl text-blue-600"></i>
+                        <h3 class="ml-3 text-xl font-semibold">Facebook</h3>
+                    </div>
+                    <span id="facebookStatus" class="text-sm font-medium rounded-full px-3 py-1 bg-gray-200">
+                        Not Connected
+                    </span>
+                </div>
+                <p class="text-gray-600 mb-4">Link your Facebook account to manage pages and automate responses.</p>
+                <button onclick="connectFacebook()" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200">
+                    Connect Facebook
+                </button>
+            </div>
+
+            <!-- TikTok Card -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center">
+                        <i class="fab fa-tiktok text-4xl text-black"></i>
+                        <h3 class="ml-3 text-xl font-semibold">TikTok</h3>
+                    </div>
+                    <span id="tiktokStatus" class="text-sm font-medium rounded-full px-3 py-1 bg-gray-200">
+                        Not Connected
+                    </span>
+                </div>
+                <p class="text-gray-600 mb-4">Connect your TikTok account to manage content and engagement.</p>
+                <button onclick="connectTikTok()" class="w-full bg-black text-white py-2 px-4 rounded-lg hover:bg-gray-900 transition duration-200">
+                    Connect TikTok
+                </button>
+            </div>
+        </div>
+
+        <!-- QR Code Modal -->
+        <div id="qrModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+            <div class="bg-white rounded-lg p-8 max-w-md w-full">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-semibold">Scan QR Code</h3>
+                    <button onclick="closeQRModal()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="text-center">
+                    <img id="qrCodeImage" src="" alt="QR Code" class="mx-auto mb-4">
+                    <p class="text-gray-600 mb-4">Scan this QR code with your phone to connect your account</p>
+                    <div id="qrTimer" class="text-sm text-gray-500"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check authentication on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('token');
+                if (!token) {
+                    // If not logged in, go back to landing page
+                    window.location.href = 'index.html';
+                    return;
+                }
+            
+            // Load user data
+            loadUserData();
+            // Check connected platforms
+            checkConnectedPlatforms();
+        });
+
+        async function loadUserData() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('/api/user/profile', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const data = await response.json();
+                
+                document.getElementById('userName').textContent = data.name;
+                document.getElementById('userPoints').textContent = `${data.points || 0} Points`;
+            } catch (error) {
+                console.error('Error loading user data:', error);
+            }
+        }
+
+        async function checkConnectedPlatforms() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('/api/social/connected-platforms', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const data = await response.json();
+                
+                updatePlatformStatus('whatsapp', data.whatsapp);
+                updatePlatformStatus('facebook', data.facebook);
+                updatePlatformStatus('tiktok', data.tiktok);
+            } catch (error) {
+                console.error('Error checking platforms:', error);
+            }
+        }
+
+        function updatePlatformStatus(platform, isConnected) {
+            const statusElement = document.getElementById(`${platform}Status`);
+            if (isConnected) {
+                statusElement.textContent = 'Connected';
+                statusElement.classList.remove('bg-gray-200');
+                statusElement.classList.add('bg-green-200', 'text-green-800');
+            }
+        }
+
+        async function connectWhatsApp() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('/api/social/generate-qr', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ platform: 'whatsapp' })
+                });
+                const data = await response.json();
+                
+                showQRModal(data.qrCode);
+                startQRStatusCheck(data.linkId);
+            } catch (error) {
+                console.error('Error connecting WhatsApp:', error);
+                alert('Error connecting to WhatsApp. Please try again.');
+            }
+        }
+
+        function connectFacebook() {
+            // Redirect to Facebook OAuth
+            window.location.href = '/api/social/connect/facebook';
+        }
+
+        function connectTikTok() {
+            // Redirect to TikTok OAuth
+            window.location.href = '/api/social/connect/tiktok';
+        }
+
+        function showQRModal(qrCode) {
+            const modal = document.getElementById('qrModal');
+            const qrImage = document.getElementById('qrCodeImage');
+            qrImage.src = qrCode;
+            modal.classList.remove('hidden');
+        }
+
+        function closeQRModal() {
+            const modal = document.getElementById('qrModal');
+            modal.classList.add('hidden');
+        }
+
+        function startQRStatusCheck(linkId) {
+            const timer = document.getElementById('qrTimer');
+            let timeLeft = 600; // 10 minutes
+
+            const interval = setInterval(async () => {
+                timeLeft--;
+                timer.textContent = `Expires in: ${Math.floor(timeLeft / 60)}:${(timeLeft % 60).toString().padStart(2, '0')}`;
+
+                if (timeLeft <= 0) {
+                    clearInterval(interval);
+                    closeQRModal();
+                    return;
+                }
+
+                try {
+                    const token = localStorage.getItem('token');
+                    const response = await fetch(`/api/social/qr-status/${linkId}`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    const data = await response.json();
+
+                    if (data.status === 'connected') {
+                        clearInterval(interval);
+                        closeQRModal();
+                        checkConnectedPlatforms();
+                    }
+                } catch (error) {
+                    console.error('Error checking QR status:', error);
+                }
+            }, 1000);
+        }
+
+        function logout() {
+            // Clear auth data and return to landing page
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

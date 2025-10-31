@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const path = require('path');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const authRoutes = require('./routes/auth');
@@ -10,6 +11,9 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Serve frontend static files from project root so visiting / will load index.html
+app.use(express.static(path.join(__dirname, '..')));
 
 // Connect to MongoDB
 const net = require('net');

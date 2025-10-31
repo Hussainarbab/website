@@ -148,18 +148,23 @@ router.post('/forgot-password', async (req, res) => {
         await store.updateUser(user._id || user.id, { resetPasswordToken: resetToken, resetPasswordExpires: Date.now() + 3600000 });
 
         const resetUrl = `${process.env.CLIENT_URL}/reset-password?token=${resetToken}`;
-        await transporter.sendMail({
-            to: email,
-            subject: 'Reset your SocialEarn password',
-            html: `
-                <h1>Password Reset Request</h1>
-                <p>Click the link below to reset your password:</p>
-                <a href="${resetUrl}">${resetUrl}</a>
-                <p>This link will expire in 1 hour.</p>
-            `
-        });
-
-        res.json({ message: 'Password reset email sent' });
+        // Send mail best-effort like registration: don't fail the whole request if email isn't configured
+        try {
+            await transporter.sendMail({
+                to: email,
+                subject: 'Reset your SocialEarn password',
+                html: `
+                    <h1>Password Reset Request</h1>
+                    <p>Click the link below to reset your password:</p>
+                    <a href="${resetUrl}">${resetUrl}</a>
+                    <p>This link will expire in 1 hour.</p>
+                `
+            });
+            return res.json({ message: 'Password reset email sent' });
+        } catch (mailErr) {
+            console.error('Warning: failed to send password reset email', mailErr);
+            return res.json({ message: 'Password reset requested. (Warning: failed to send email)' });
+        }
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Error requesting password reset' });
