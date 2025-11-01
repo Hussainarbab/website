@@ -712,7 +712,8 @@
 
         // API URL (configurable)
         function getApiUrl() {
-            return localStorage.getItem('api:url') || 'http://localhost:5000/api';
+            // Default to the server port the backend uses (5001) so the health check succeeds
+            return localStorage.getItem('api:url') || 'http://localhost:5001/api';
         }
         function setApiUrl(url) {
             if (url && url.trim()) localStorage.setItem('api:url', url.trim());

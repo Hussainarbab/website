@@ -5,6 +5,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
+const facebookRoutes = require('./routes/facebook');
 
 const app = express();
 
@@ -72,6 +73,12 @@ mongoose.connection.on('error', (err) => {
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
+app.use('/api/facebook', facebookRoutes);
+
+// Simple health endpoint used by the frontend to detect backend availability
+app.get('/api/health', (req, res) => {
+    res.json({ status: 'ok' });
+});
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -79,7 +86,7 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something broke!');
 });
 
-// Default to 5001 locally if 5000 is already taken on your machine
+// Default to 5001 locally if PORT is not set
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

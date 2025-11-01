@@ -143,4 +143,23 @@ router.get('/qr-status/:linkId', auth, async (req, res) => {
     }
 });
 
+// Get connected platforms for the authenticated user
+router.get('/connected-platforms', auth, async (req, res) => {
+    try {
+        const userId = req.user.id || req.user._id;
+        const user = await store.findById(userId);
+
+        const connections = {
+            whatsapp: !!(user && user.whatsappSession),
+            facebook: !!(user && (user.facebookData || (user.connectedAccounts || []).includes('facebook'))),
+            tiktok: !!(user && ((user.connectedAccounts || []).includes('tiktok') || user.tiktokToken))
+        };
+
+        res.json(connections);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error fetching connected platforms' });
+    }
+});
+
 module.exports = router;
