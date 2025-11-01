@@ -76,7 +76,7 @@
                     </span>
                 </div>
                 <p class="text-gray-600 mb-4">Connect your TikTok account to manage content and engagement.</p>
-                <button onclick="connectTikTok()" class="w-full bg-black text-white py-2 px-4 rounded-lg hover:bg-gray-900 transition duration-200">
+                <button onclick="openTikTokModal()" class="w-full bg-black text-white py-2 px-4 rounded-lg hover:bg-gray-900 transition duration-200">
                     Connect TikTok
                 </button>
             </div>
@@ -98,6 +98,46 @@
                 </div>
             </div>
         </div>
+    
+    <!-- TikTok Connect Modal -->
+    <div id="tiktokModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg p-6 max-w-lg w-full">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-semibold">Connect TikTok</h3>
+                <button onclick="closeTikTokModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <p class="text-gray-600 mb-4">Choose how you'd like to connect your TikTok account. The recommended and secure method is using TikTok's official OAuth flow.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <button id="tiktok-oauth" onclick="connectTikTokOAuth()" class="flex items-center justify-center gap-2 bg-red-600 text-white py-2 px-4 rounded">
+                    <i class="fab fa-tiktok"></i> Sign in with TikTok (OAuth)
+                </button>
+
+                <button id="tiktok-google" onclick="connectTikTokWithGoogle()" class="flex items-center justify-center gap-2 bg-blue-600 text-white py-2 px-4 rounded">
+                    <i class="fab fa-google"></i> Sign in with Google
+                </button>
+
+                <button id="tiktok-code" onclick="generateTikTokCode()" class="col-span-1 md:col-span-2 bg-gray-100 text-gray-800 py-2 px-4 rounded border">
+                    Generate Linking Code (enter this code in the app or use with support)
+                </button>
+
+                <button id="tiktok-qr" onclick="generateTikTokQR()" class="col-span-1 md:col-span-2 bg-gray-100 text-gray-800 py-2 px-4 rounded border">
+                    Generate QR / Link (scan or share)
+                </button>
+            </div>
+
+            <div id="tiktokResult" class="mt-2">
+                <!-- Filled dynamically: code, QR image, or instructions -->
+            </div>
+
+            <div class="mt-4 text-right">
+                <button onclick="closeTikTokModal()" class="bg-gray-200 text-gray-800 px-4 py-2 rounded">Close</button>
+            </div>
+        </div>
+    </div>
     </div>
 
     <script>
@@ -187,8 +227,149 @@
         }
 
         function connectTikTok() {
-            // Redirect to TikTok OAuth
-            window.location.href = '/api/social/connect/tiktok';
+            // Deprecated - UI now uses modal
+            openTikTokModal();
+        }
+
+        function openTikTokModal() {
+            document.getElementById('tiktokModal').classList.remove('hidden');
+            document.getElementById('tiktokResult').innerHTML = '';
+        }
+
+        function closeTikTokModal() {
+            document.getElementById('tiktokModal').classList.add('hidden');
+        }
+
+        async function connectTikTokOAuth() {
+            // Open the OAuth flow in a new window (or redirect)
+            try {
+                // If backend provides a direct URL, open it; otherwise fall back to endpoint redirect
+                const res = await fetch('/api/social/connect/tiktok');
+                const data = await res.json();
+                const url = data.authUrl || '/api/social/connect/tiktok';
+                window.open(url, '_blank');
+            } catch (err) {
+                // Fallback: redirect current window
+                window.location.href = '/api/social/connect/tiktok';
+            }
+        }
+
+        // Many third-party providers allow federated login via Google. This button opens the same OAuth flow
+        // but you may want to implement provider-specific parameters server-side.
+        function connectTikTokWithGoogle() {
+            // Redirect to same OAuth endpoint for now
+            window.open('/api/social/connect/tiktok', '_blank');
+        }
+
+        async function generateTikTokCode() {
+            try {
+                const token = localStorage.getItem('token');
+                const res = await fetch('/api/social/generate-code', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ platform: 'tiktok' })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.message || 'Failed to generate code');
+
+                document.getElementById('tiktokResult').innerHTML = `
+                    <div class="p-4 bg-green-50 rounded border">
+                        <p class="font-mono text-2xl text-center">${data.code}</p>
+                        <p class="text-sm text-gray-600 mt-2">Expires in: ${data.expiresIn || '10 minutes'}</p>
+                        <div class="mt-2 text-right">
+                            <button onclick="copyText('${data.code}')" class="px-3 py-1 bg-blue-600 text-white rounded">Copy code</button>
+                        </div>
+                    </div>
+                `;
+            } catch (err) {
+                document.getElementById('tiktokResult').innerHTML = `<p class="text-red-500">${err.message}</p>`;
+            }
+        }
+
+        async function generateTikTokQR() {
+            try {
+                const token = localStorage.getItem('token');
+                const res = await fetch('/api/social/generate-qr', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ platform: 'tiktok' })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.message || 'Failed to generate QR');
+
+                document.getElementById('tiktokResult').innerHTML = `
+                    <div class="text-center">
+                        <img src="${data.qrCode}" alt="TikTok QR" class="mx-auto mb-2" />
+                        <p class="text-sm text-gray-600">Scan this QR or use the link ID: <strong>${data.linkId}</strong></p>
+                        <div class="mt-2 text-right">
+                            <button onclick="copyText('${data.linkId}')" class="px-3 py-1 bg-blue-600 text-white rounded">Copy link ID</button>
+                        </div>
+                    </div>
+                `;
+
+                // Start polling for QR status (reuse the QR status endpoint)
+                startTikTokQRStatusCheck(data.linkId);
+            } catch (err) {
+                document.getElementById('tiktokResult').innerHTML = `<p class="text-red-500">${err.message}</p>`;
+            }
+        }
+
+        function copyText(text) {
+            try {
+                navigator.clipboard.writeText(text);
+                alert('Copied to clipboard');
+            } catch (err) {
+                // Fallback for older browsers
+                const el = document.createElement('textarea');
+                el.value = text;
+                document.body.appendChild(el);
+                el.select();
+                document.execCommand('copy');
+                el.remove();
+                alert('Copied to clipboard');
+            }
+        }
+
+        function startTikTokQRStatusCheck(linkId) {
+            const container = document.getElementById('tiktokResult');
+            let timeLeft = 600; // 10 minutes
+
+            const interval = setInterval(async () => {
+                timeLeft--;
+                // show remaining time if present
+                const timerText = `Expires in: ${Math.floor(timeLeft / 60)}:${(timeLeft % 60).toString().padStart(2, '0')}`;
+                if (container.firstElementChild) {
+                    const info = container.querySelector('.text-sm');
+                    if (info) info.textContent = timerText;
+                }
+
+                if (timeLeft <= 0) {
+                    clearInterval(interval);
+                    return;
+                }
+
+                try {
+                    const token = localStorage.getItem('token');
+                    const res = await fetch(`/api/social/qr-status/${linkId}`, {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    const data = await res.json();
+                    if (data.status === 'connected') {
+                        clearInterval(interval);
+                        alert('TikTok account linked successfully');
+                        closeTikTokModal();
+                        checkConnectedPlatforms();
+                    }
+                } catch (err) {
+                    console.error('Error checking TikTok QR status', err);
+                }
+            }, 2000);
         }
 
         function showQRModal(qrCode) {

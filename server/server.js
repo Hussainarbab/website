@@ -79,7 +79,8 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something broke!');
 });
 
-const PORT = process.env.PORT || 5000;
+// Default to 5001 locally if 5000 is already taken on your machine
+const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });

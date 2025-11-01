@@ -26,10 +26,10 @@
     "verificationToken": "4990be42-65c1-4b4c-9b02-f73a5f6fc3f8",
     "resetPasswordToken": null,
     "resetPasswordExpires": null,
-    "lastLogin": "2025-10-31T09:35:38.298Z",
-    "loginStreak": 5,
-    "lastLoginDate": "2025-10-31T09:35:38.298Z",
-    "earnings": 650,
+    "lastLogin": "2025-11-01T15:30:25.839Z",
+    "loginStreak": 6,
+    "lastLoginDate": "2025-11-01T15:30:25.839Z",
+    "earnings": 750,
     "connectedAccounts": [
       "whatsapp",
       "tiktok",
@@ -37,6 +37,6 @@
     ],
     "points": 150,
     "createdAt": "2025-10-31T08:40:45.249Z",
-    "updatedAt": "2025-10-31T09:35:38.300Z"
+    "updatedAt": "2025-11-01T15:30:25.841Z"
   }
 ]
