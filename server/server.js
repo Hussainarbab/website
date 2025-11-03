@@ -86,8 +86,8 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something broke!');
 });
 
-// Default to 5001 locally if PORT is not set
-const PORT = process.env.PORT || 5001;
+// Always use port 5001 for consistency
+const PORT = 5001;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });

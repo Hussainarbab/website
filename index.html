@@ -378,10 +378,61 @@
                                         <div class="font-medium">Link Facebook account</div>
                                         <div class="text-xs text-gray-500">Use Facebook Login</div>
                                     </div>
-                                    <button id="connect-facebook" class="px-3 py-1.5 rounded bg-blue-600 text-white">Connect</button>
+                                    <button id="connect-facebook" class="px-3 py-1.5 rounded bg-blue-600 text-white" onclick="handleFacebookConnect()">Connect</button>
                                 </li>
                             </ul>
                         </div>
+                        <script>
+                        async function handleFacebookConnect() {
+                            try {
+                                const token = localStorage.getItem('token');
+                                if (!token) {
+                                    throw new Error('Please log in first');
+                                }
+
+                                const response = await fetch(`${API_URL}/facebook/connect`);
+                                if (!response.ok) {
+                                    throw new Error('Failed to start Facebook connection');
+                                }
+
+                                const data = await response.json();
+                                const { authUrl } = data;
+
+                                // Open Facebook login in a popup
+                                const width = 600;
+                                const height = 600;
+                                const left = (window.innerWidth - width) / 2;
+                                const top = (window.innerHeight - height) / 2;
+
+                                const popup = window.open(
+                                    authUrl,
+                                    'ConnectWithFacebook',
+                                    `width=${width},height=${height},top=${top},left=${left}`
+                                );
+
+                                if (!popup) {
+                                    throw new Error('Popup was blocked. Please allow popups for this site.');
+                                }
+
+                                // Handle the popup response
+                                window.addEventListener('message', function handler(event) {
+                                    if (event.data && event.data.type === 'FACEBOOK_CONNECTED') {
+                                        window.removeEventListener('message', handler);
+                                        if (event.data.success) {
+                                            alert('Facebook connected successfully! You earned points!');
+                                            showDashboard(); // Refresh to show updated points
+                                        } else {
+                                            alert(event.data.error || 'Failed to connect Facebook');
+                                        }
+                                    }
+                                });
+
+                            } catch (error) {
+                                alert(error.message || 'Error connecting to Facebook');
+                                console.error('Facebook connection error:', error);
+                            }
+                        }
+                        </script>
                     </section>
 
                     <!-- Connections Panel -->
@@ -637,6 +688,7 @@
     </div>
 
     <!-- JavaScript -->
+    <script src="/server/public/js/facebook-connect.js"></script>
     <script>
         // Mobile menu toggle
         document.getElementById('menu-btn').addEventListener('click', function() {
@@ -993,7 +1045,7 @@
             // Wire up connect buttons
             document.getElementById('connect-whatsapp').onclick = () => openWA();
             document.getElementById('connect-tiktok').onclick = () => openTikTok();
-            document.getElementById('connect-facebook').onclick = () => connectProvider('facebook');
+            document.getElementById('connect-facebook').onclick = connectFacebook;
 
             document.getElementById('logout-btn').onclick = logout;
 

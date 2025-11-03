@@ -10,9 +10,48 @@ const pendingOAuth = new Map();
 
 // Initiate Facebook OAuth
 router.get('/connect', auth, (req, res) => {
-    const fbAppId = process.env.FACEBOOK_APP_ID;
-    const redirectUri = `${process.env.APP_URL}/api/facebook/callback`;
-    const state = uuidv4();
+    try {
+        const fbAppId = process.env.FACEBOOK_APP_ID;
+        if (!fbAppId) {
+            throw new Error('Facebook App ID not configured');
+        }
+        
+        const redirectUri = `${process.env.APP_URL}/api/facebook/callback`;
+        if (!process.env.APP_URL) {
+            throw new Error('APP_URL not configured');
+        }
+        
+        const state = uuidv4();
+        
+        // Store state with user ID
+        pendingOAuth.set(state, {
+            userId: req.user.id || req.user._id,
+            expiry: Date.now() + 10 * 60 * 1000 // 10 minutes
+        });
+
+        // Generate Facebook OAuth URL
+        const scope = [
+            'email',
+            'pages_show_list',
+            'pages_read_engagement',
+            'pages_manage_posts',
+            'pages_messaging',
+            'public_profile'
+        ].join(',');
+
+        const authUrl = `https://www.facebook.com/v18.0/dialog/oauth?` +
+            `client_id=${fbAppId}&` +
+            `redirect_uri=${encodeURIComponent(redirectUri)}&` +
+            `state=${state}&` +
+            `scope=${scope}`;
+
+        res.json({ authUrl });
+    } catch (error) {
+        console.error('Facebook connect error:', error);
+        res.status(500).json({ 
+            error: error.message || 'Failed to initialize Facebook connection'
+        });
+    }
     
     // Store state with user ID
     pendingOAuth.set(state, {
@@ -43,12 +82,46 @@ router.get('/connect', auth, (req, res) => {
 // Handle Facebook OAuth callback
 router.get('/callback', async (req, res) => {
     try {
-        const { code, state } = req.query;
+        const { code, error, error_description } = req.query;
         
-        // Verify state to prevent CSRF
-        const oauthInfo = pendingOAuth.get(state);
-        if (!oauthInfo) {
-            return res.status(400).send('Invalid or expired session');
+        // Check for OAuth errors
+        if (error) {
+            console.error('Facebook OAuth error:', error, error_description);
+            return res.send(`
+                <!DOCTYPE html>
+                <html>
+                    <body>
+                        <script>
+                            window.opener.postMessage({ 
+                                type: 'FACEBOOK_CONNECTED',
+                                success: false,
+                                error: '${error_description || error}'
+                            }, '*');
+                            window.close();
+                        </script>
+                        <p>Error: ${error_description || error}</p>
+                    </body>
+                </html>
+            `);
+        }
+
+        if (!code) {
+            return res.status(400).send(`
+                <!DOCTYPE html>
+                <html>
+                    <body>
+                        <script>
+                            window.opener.postMessage({ 
+                                type: 'FACEBOOK_CONNECTED',
+                                success: false,
+                                error: 'No authorization code received'
+                            }, '*');
+                            window.close();
+                        </script>
+                        <p>Error: No authorization code received</p>
+                    </body>
+                </html>
+            `);
         }
 
         const fbAppId = process.env.FACEBOOK_APP_ID;
