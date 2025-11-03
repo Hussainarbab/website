@@ -15,21 +15,21 @@ router.get('/connect', auth, (req, res) => {
         if (!fbAppId) {
             throw new Error('Facebook App ID not configured');
         }
-        
-        const redirectUri = `${process.env.APP_URL}/api/facebook/callback`;
+
         if (!process.env.APP_URL) {
             throw new Error('APP_URL not configured');
         }
-        
+
+        const redirectUri = `${process.env.APP_URL}/api/facebook/callback`;
         const state = uuidv4();
-        
+
         // Store state with user ID
         pendingOAuth.set(state, {
             userId: req.user.id || req.user._id,
             expiry: Date.now() + 10 * 60 * 1000 // 10 minutes
         });
 
-        // Generate Facebook OAuth URL
+        // Request necessary permissions
         const scope = [
             'email',
             'pages_show_list',
@@ -39,6 +39,7 @@ router.get('/connect', auth, (req, res) => {
             'public_profile'
         ].join(',');
 
+        // Generate Facebook OAuth URL
         const authUrl = `https://www.facebook.com/v18.0/dialog/oauth?` +
             `client_id=${fbAppId}&` +
             `redirect_uri=${encodeURIComponent(redirectUri)}&` +
@@ -52,38 +53,13 @@ router.get('/connect', auth, (req, res) => {
             error: error.message || 'Failed to initialize Facebook connection'
         });
     }
-    
-    // Store state with user ID
-    pendingOAuth.set(state, {
-        userId: req.user.id || req.user._id,
-        expiry: Date.now() + 10 * 60 * 1000 // 10 minutes
-    });
-
-    // Request necessary permissions
-    const scope = [
-        'email',
-        'pages_show_list',
-        'pages_read_engagement',
-        'pages_manage_posts',
-        'pages_messaging',
-        'public_profile'
-    ].join(',');
-
-    // Generate Facebook OAuth URL
-    const authUrl = `https://www.facebook.com/v18.0/dialog/oauth?` +
-        `client_id=${fbAppId}&` +
-        `redirect_uri=${encodeURIComponent(redirectUri)}&` +
-        `state=${state}&` +
-        `scope=${scope}`;
-
-    res.json({ authUrl });
 });
 
 // Handle Facebook OAuth callback
 router.get('/callback', async (req, res) => {
     try {
-        const { code, error, error_description } = req.query;
-        
+        const { code, state, error, error_description } = req.query;
+
         // Check for OAuth errors
         if (error) {
             console.error('Facebook OAuth error:', error, error_description);
@@ -105,7 +81,7 @@ router.get('/callback', async (req, res) => {
             `);
         }
 
-        if (!code) {
+        if (!code || !state) {
             return res.status(400).send(`
                 <!DOCTYPE html>
                 <html>
@@ -114,11 +90,32 @@ router.get('/callback', async (req, res) => {
                             window.opener.postMessage({ 
                                 type: 'FACEBOOK_CONNECTED',
                                 success: false,
-                                error: 'No authorization code received'
+                                error: 'No authorization code or state received'
                             }, '*');
                             window.close();
                         </script>
-                        <p>Error: No authorization code received</p>
+                        <p>Error: No authorization code or state received</p>
+                    </body>
+                </html>
+            `);
+        }
+
+        // verify state
+        const oauthInfo = pendingOAuth.get(state);
+        if (!oauthInfo) {
+            return res.status(400).send(`
+                <!DOCTYPE html>
+                <html>
+                    <body>
+                        <script>
+                            window.opener.postMessage({ 
+                                type: 'FACEBOOK_CONNECTED',
+                                success: false,
+                                error: 'Invalid or expired session'
+                            }, '*');
+                            window.close();
+                        </script>
+                        <p>Error: Invalid or expired session</p>
                     </body>
                 </html>
             `);

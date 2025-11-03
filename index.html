@@ -390,7 +390,9 @@
                                     throw new Error('Please log in first');
                                 }
 
-                                const response = await fetch(`${API_URL}/facebook/connect`);
+                                const response = await fetch(`${API_URL}/facebook/connect`, {
+                                    headers: { 'Authorization': 'Bearer ' + token }
+                                });
                                 if (!response.ok) {
                                     throw new Error('Failed to start Facebook connection');
                                 }
@@ -1524,6 +1526,9 @@
         });
 
         async function connectProvider(provider) {
+            if (provider === 'facebook') {
+                return connectFacebook();
+            }
             const token = localStorage.getItem('token');
             if (!token) { alert('You must be logged in'); return; }
 
@@ -1536,6 +1541,46 @@
                     },
                     body: JSON.stringify({ provider })
                 });
+                
+                async function connectFacebook() {
+                    try {
+                        const token = localStorage.getItem('token');
+                        if (!token) {
+                            alert('Please log in first');
+                            return;
+                        }
+
+                        const response = await fetch(`${API_URL}/facebook/connect`, {
+                            headers: {
+                                'Authorization': 'Bearer ' + token
+                            }
+                        });
+
+                        if (!response.ok) throw new Error('Failed to start Facebook connection');
+                        
+                        const { authUrl } = await response.json();
+                        const popup = window.open(authUrl, 'facebook_login', 
+                            'width=600,height=600,left=400,top=100');
+
+                        if (!popup) {
+                            throw new Error('Popup was blocked. Please allow popups for this site.');
+                        }
+
+                        window.addEventListener('message', function(event) {
+                            if (event.data.type === 'FACEBOOK_CONNECTED') {
+                                if (event.data.success) {
+                                    alert('Facebook connected successfully!');
+                                    showDashboard();
+                                } else {
+                                    alert(event.data.error || 'Failed to connect Facebook');
+                                }
+                                popup.close();
+                            }
+                        });
+                    } catch (error) {
+                        alert('Error connecting to Facebook: ' + error.message);
+                    }
+                }
                 if (!res.ok) {
                     const text = await res.text();
                     throw new Error(text || 'Error connecting');
